@@ -15,7 +15,7 @@ class RawQuerySetPaginator(DefaultPaginator):
         self.connection = connections[self.raw_query_set.db]
 
     def _get_count(self):
-        if self._count is None:
+        if getattr(self, '_count', None) is None:
             cursor = self.connection.cursor()
             count_query = 'SELECT COUNT(*) FROM (%s) AS sub_query_for_count' % self.raw_query_set.raw_query
             cursor.execute(count_query, self.raw_query_set.params)
